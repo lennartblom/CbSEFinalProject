@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Conpatible" content="IE=edge" />
+
+        <!-- Bootstrap -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" />
+        <h:outputStylesheet library="css" name="bootstrap.css" />
+        <h:outputScript library="js" name="bootstrap.js" />
+
+
+        <title>Erstellen</title>
+
+    </h:head> 
+    <h:body> 
+
+        <div class="container">
+
+
+            <c:if test="#{lendingSystem.errors.size() > 0}">
+                <div class="row">
+                    <div class="col-xs-12 form-group bg-danger has-error">
+
+                        <ul>
+                            <h3>Es gab Probleme</h3>
+                            <ui:repeat value="#{lendingSystem.errors}" var="error">
+                                <li>#{error}</li>
+                            </ui:repeat>
+                        </ul>
+
+                        <p></p>
+
+                    </div>
+
+                </div>
+                #{lendingSystem.clearErrors()}
+            </c:if>
+
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-6">
+
+                    <h2>Medien hinzufügen</h2>
+                    <h:form class="form-horizontal">
+
+                        <div class="form-group">
+                            <h:message for="name" style="color:red"/><br/>
+                            <label for="name">Name des Materials</label>
+                            <h:inputText id="name" value="#{material.name}" a:placeholder="Name des Mediums" class="form-control input-md"
+                                         required="true"
+                                         requiredMessage="Bitte geben sie den Materialnamen an"
+                                         converterMessage="Der Name ist nicht korrekt eingegeben worden"/>
+
+                        </div>
+
+                        <div class="form-group">
+                            <h:message for="amount" style="color:red"/><br/>
+                            <label for="amount">Anzahl der Objekte</label>
+                            <div class="input-group">
+
+
+                                <h:inputText id="amount" value="#{material.quantity}" a:placeholder="Anzahl der Objekte"  class="form-control input-md"
+                                             required="true"
+                                             requiredMessage="Ein nicht negativer Wert muss angegeben werden"
+                                             converterMessage="geben Sie eine nicht negative ganze Zahl ein">
+                                    <f:validateBean disabled =" false "/>
+                                </h:inputText>
+
+                                <div class="input-group-addon"> Stück</div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Objektbeschreibung</label>
+                            <div class="input-group">
+                                <h:inputTextarea id="description" value="#{material.description}" rows="3" required="false" a:placeholder="Eine kurze Objektbeschreibung" class="form-control col-xs-12" />
+                            </div>
+                        </div>  
+
+                        <h:commandButton value="Hinzufügen" styleClass="btn btn-success btn-block" action="#{lendingSystem.addMaterial(material)}"/>
+
+                    </h:form>
+
+                </div>
+                <div class="col-xs-12 col-md-6">
+
+                    <h:form>
+                        <h2>Alle verfügbaren Objekttypen</h2>
+                        <table class="table table-striped"> 
+                            <thead> 
+                                <tr> 
+                                    <th>#</th> 
+                                    <th>Objekt</th> 
+                                    <th>Anzahl</th> 
+                                    <th>Kurzbeschreibung</th> 
+                                    <th>Aktionen</th> 
+                                </tr> 
+
+                            </thead>
+                            <tbody> 
+                                <ui:repeat value="#{material.getMaterials()}" var="m">
+                                    <tr> 
+                                        <th>#{m.id}</th> 
+                                        <td>#{m.name}</td> 
+                                        <td>#{m.quantity}</td> 
+                                        <td>
+                                            <span title="#{m.description}">#{m.description}</span>
+                                        </td>
+                                        <td>
+                                            <h:commandLink class="btn btn-warning" action="#{lendingSystem.editMaterial(m)}">
+                                                <i class="glyphicon glyphicon-pencil" /> 
+                                            </h:commandLink>    
+
+
+                                            <h:commandLink class="btn btn-danger" onclick="if (!confirm('Material wirklich löschen?'))
+                                                        return false" action="#{lendingSystem.removeMaterial(m)}">
+                                                <i class="glyphicon glyphicon-remove" /> 
+                                            </h:commandLink>    
+                                        </td>
+                                    </tr> 
+                                </ui:repeat>
+
+                            </tbody> 
+                        </table>
+                    </h:form>
+
+                </div>
+            </div>
+            <div class="row">
+                <br />
+                <div class="col-xs-12">
+
+                    <h:form>
+                        <h:commandButton value="Startseite" styleClass="btn btn-primary btn-xs" action="#{navigation.goToIndex()}"/>
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+    </h:body> 
+</html>

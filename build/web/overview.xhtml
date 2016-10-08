@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Conpatible" content="IE=edge" />
+
+
+        <!-- Bootstrap -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" />
+        <h:outputStylesheet library="css" name="bootstrap.css" />
+        <h:outputScript library="js" name="bootstrap.js" />
+
+        <title>Übersicht</title>
+    </h:head> 
+    <h:body> 
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <h2>Momentane Ausleihen</h2>
+
+                    <h:form>
+                        <table class="table table-striped"> 
+                            <thead> 
+                                <tr> 
+                                    <th>Person</th> 
+                                    <th>Ausgeliehenen Materialien</th> 
+                                    <th>Frühst. Start Ausleihe Datum</th>
+                                    <th>Spät. End Ausleihe Datum</th>
+                                </tr> 
+
+                            </thead>
+                            <tbody>
+
+                                <ui:repeat value="#{lending.getLendings()}" var="l">
+                                    <tr>
+                                        <td><h:commandButton value="#{l.person.name}" styleClass="btn btn-info" /></td>
+                                        <td>#{lending.getLendingObjectsQuantityWithLendingId(l.id)}</td>
+                                        <td>#{lending.getMinDateFromLendingId(l.id)}</td>
+                                        <td>#{lending.getMaxDateFromLendingId(l.id)}</td>
+                                    </tr>
+                                </ui:repeat>
+
+                            </tbody>
+                        </table>
+                    </h:form>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <h2>Momentane Ausleiher</h2>
+                    <h:form>
+                        <table class="table table-striped"> 
+                            <thead> 
+                                <tr> 
+                                    <th>Name</th> 
+                                    <th>Ausgeliehenen Materialien</th> 
+                                </tr> 
+                            </thead>
+                            <tbody>
+                                <ui:repeat value="#{person.getPersons()}" var="p">
+                                    <tr>
+                                        <td><h:commandButton value="#{p.name}" styleClass="btn btn-info" /></td>
+                                        <td>#{person.getLendingObjects(p.id)}</td>
+                                    </tr>
+                                </ui:repeat>
+
+                            </tbody>
+                        </table>
+                    </h:form>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+
+                    <h:form>
+                        <h2>Momentan ausgeliehene Objekte</h2>
+                        <table class="table table-striped"> 
+                            <thead> 
+                                <tr> 
+                                    <th>Objekt</th> 
+                                    <th>Anzahl</th> 
+                                    <th>Ausleiher</th>
+                                    <th>Von</th>
+                                    <th>Bis</th>
+                                </tr> 
+
+                            </thead>
+                            <tbody>
+                                <ui:repeat value="#{lendingObject.getLendingObjects()}" var="l">
+                                    <tr>
+                                        <td><h:commandButton value="#{l.type.name}" styleClass="btn btn-info" /></td>
+                                        <td>#{l.lendingQuantity}</td>
+                                        <td>#{lendingObject.getLenderNameWithId(l.id)}</td>
+                                        <td><h:commandButton value="#{l.startLendDate}" styleClass="btn btn-warning" /></td>
+                                        <td><h:commandButton value="#{l.endLendDate}" styleClass="btn btn-success" /></td>
+
+                                    </tr>
+                                </ui:repeat>
+                            </tbody> 
+                        </table>
+                    </h:form>
+
+                    <h:form>
+                        <h:commandButton value="Startseite" styleClass="btn btn-primary btn-xs" action="#{navigation.goToIndex()}"/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </h:body> 
+</html>

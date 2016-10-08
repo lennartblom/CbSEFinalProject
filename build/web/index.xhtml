@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Conpatible" content="IE=edge" />
+        
+        <!-- Bootstrap -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" />
+        <h:outputStylesheet library="css" name="bootstrap.css" />
+        <h:outputScript library="js" name="bootstrap.js" />
+        
+        
+        <title>Erstellen</title>
+    </h:head> 
+    <h:body> 
+        <div class="container">
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+
+                    <h:form>
+                        <h2> Medienausleihe der Hochschule </h2>
+                        <div class="btn-group">
+                            <h:commandButton  value="Medien ausleihen" styleClass="btn btn-info btn-lg" action="#{navigation.goToLendMaterial()}"/>
+                            <h:commandButton  value="Medien erstellen" styleClass="btn btn-info btn-lg" action="#{navigation.goToAddMaterial()}"/>
+                            <h:commandButton  value="Übersicht" styleClass="btn btn-info btn-lg" action="#{navigation.goToOverview()}"/>
+                        </div>
+                        <br />
+                        <br />
+                        <h:commandButton value="Dummydaten erstellen" styleClass="btn btn-success btn-xs" action="#{lendingSystem.insertDummyData()}" />
+                    </h:form>
+                </div>
+            </div>
+
+           
+        </div>
+    </h:body> 
+</html>

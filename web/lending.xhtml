@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Conpatible" content="IE=edge" />
+        
+        <!-- Bootstrap -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" />
+        <h:outputStylesheet library="css" name="bootstrap.css" />
+        <h:outputScript library="js" name="bootstrap.js" />
+        
+        <h:outputScript library="js" name="jquery.bootstrap-touchspin.min.js" />
+        <h:outputStylesheet library="css" name="jquery.bootstrap-touchspin.min.css" />
+        
+        
+        
+        <title>Ausleihe</title>
+    </h:head> 
+    <h:body> 
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+
+                    <h:form>
+
+                        <h2>Medien ausleihen</h2>
+                        <p>*Hinweis: Die Anzahl kann ggf. für bestimmte Zeiträume abweichen. Die angegebene Zahl ist nur die Anzahl, die als Warenbestand im System abgebildet wird, wenn keine Ausleihen zum gewünschten Zeitraum aktiv sind. </p>
+                        <table class="table table-striped"> 
+                            <thead> 
+                                <tr> 
+                                    <th>#</th> 
+                                    <th>Objekt</th> 
+                                    <th>Anzahl*</th> 
+                                    <th>Kurzbeschreibung</th> 
+                                    <th>Anzahl</th> 
+                                </tr> 
+
+                            </thead>
+                            <tbody> 
+                                <ui:repeat value="#{material.getMaterials()}" var="m">
+                                    
+                                    <h:panelGroup rendered="#{m.quantity > 0}">
+
+                                        <script>
+                                            $( document ).ready(function() {
+                                                $(".spinnerField_#{m.id}").TouchSpin({
+                                                    verticalbuttons: true,
+                                                    min: 0,
+                                                    max: #{m.quantity}
+                                                });
+                                            });
+
+                                        </script>
+
+                                        <tr> 
+                                            <th>#{m.id}</th> 
+                                            <td>#{m.name}</td> 
+                                            <td>#{m.quantity}</td> 
+                                            <td>
+                                                <span title="#{m.description}">#{m.description}</span>
+                                            </td>
+            
+                                            <td>
+                                                
+                                                <h:inputText value="#{lendingObject.lendingQuantity}" required="true" styleClass="spinnerField_#{m.id}">
+                                                    <f:ajax listener="#{lendingSystem.saveForCurrentLendings(m, lendingObject.lendingQuantity)}" />
+                                                </h:inputText>
+                                            </td>
+                                        </tr> 
+                                        </h:panelGroup>
+                                    
+                                </ui:repeat>
+                                
+                            </tbody> 
+                        </table>
+                        
+                        <h:commandButton value="Ausgewählte Objekte ausleihen" styleClass="btn btn-success btn-lg" action="#{navigation.goToLendingConfirmation()}"/>
+                    
+                    </h:form>
+                    <br />
+                    <h:form>
+                        <h:commandButton value="Startseite" styleClass="btn btn-primary btn-xs" action="#{navigation.goToIndex()}"/>
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+    </h:body> 
+</html>
